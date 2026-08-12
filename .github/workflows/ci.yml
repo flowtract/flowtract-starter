@@ -1,0 +1,48 @@
+name: Starter
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  starter:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ubuntu / Node 22
+            os: ubuntu-latest
+            node: 22
+          - name: windows / Node 24
+            os: windows-latest
+            node: 24
+    steps:
+      - name: Check out starter
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install locked registry dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Execute starter proof
+        run: npm run check
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Verify repository integrity
+        run: git status --porcelain --untracked-files=all

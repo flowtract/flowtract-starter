@@ -1,0 +1,27 @@
+{
+  "name": "flowtract-starter",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Five-minute authenticated REST workflow starter for Flowtract",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "demo": "node --disable-warning=ExperimentalWarning --experimental-strip-types src/workflow.ts",
+    "check:registry": "node scripts/check-registry.mjs",
+    "check:integrity": "node scripts/check-integrity.mjs",
+    "check": "npm run type-check && npm run check:registry && npm run demo && npm run check:integrity"
+  },
+  "dependencies": {
+    "flowtract": "0.1.0",
+    "playwright": "1.62.1",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "typescript": "5.9.3"
+  }
+}
